@@ -1,0 +1,19 @@
+﻿@model List<MovieVM>
+<div class="container-fluid">
+	<div class="container">
+		<div class="row gap-5">
+			@foreach (var item in Model)
+			{
+				<div class="card" style="width: 18rem; margin:10px:">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">@item.Title</li>
+						<li class="list-group-item">@item.ReleaseDate</li>
+						<li class="list-group-item"><a asp-action="Details" asp-route-customerId="@item.CustomerId" asp-route-movieId="@item.Id">Details</a></li>
+						<li class="list-group-item"><a asp-controller="Reviews" asp-action="Create" asp-route-customerId="@item.CustomerId" asp-route-movieId="@item.Id" class="btn-primary">Review</a></li>
+						@* <div class="d-flex justify-content-end mb-3">  @Html.ActionLink("Add", "Create", "Reviews", null, new { @class = "btn btn-primary" })</div> *@
+					</ul>
+				</div>
+			}
+		</div>
+	</div>
+</div>
