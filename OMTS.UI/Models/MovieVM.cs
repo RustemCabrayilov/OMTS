@@ -10,6 +10,8 @@ namespace OMTS.UI.Models
 		public string Director { get; set; }
 		public DateTime ReleaseDate { get; set; }
         public int? CustomerId { get; set; }
-
+        public string Thumbnail { get; set; }
+		public IFormFile Image { get; set; }
+		public float Average {  get; set; }
     }
 }

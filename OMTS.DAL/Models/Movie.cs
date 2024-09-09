@@ -15,5 +15,6 @@ namespace OMTS.DAL.Models
         public DateTime ReleaseDate { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
         public ICollection<Review> Reviews { get; set; }
+        public string Thumbnail { get; set; }
     }
 }

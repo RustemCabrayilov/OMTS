@@ -11,7 +11,7 @@ namespace OMTS.DAL.Repository.Interfaces
     {
         public Task<T> Add(T entity);
         public T Update(T entity);
-        public T Delete(T entity);
+        public T Delete(int id);
         public Task<T> Get(int? id);
         public Task<IEnumerable<T>> GetAll(params Func<IQueryable<T>, IQueryable<T>>[] includeProperties);
         public Task SaveAsync();

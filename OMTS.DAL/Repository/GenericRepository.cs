@@ -25,8 +25,9 @@ namespace OMTS.DAL.Repository
 			return entity;
 		}
 
-		public T Delete(T entity)
+		public T Delete(int id)
 		{
+			var entity = _dbSet.Find(id);
 			_dbSet.Remove(entity);
 			return entity;
 		}

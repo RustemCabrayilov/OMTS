@@ -65,5 +65,50 @@ namespace OMTS.UI.Areas.Admin.Controllers
 			await _showtimeRepository.SaveAsync();
 			return RedirectToAction("Index");
 		}
+		public async Task<IActionResult> Edit(int id)
+		{
+			var showtime = await _showtimeRepository.Get(id);
+			var movies = await _movieRepository.GetAll();
+			var cinemaHalls = await _cinemaHallRepository.GetAll();
+			ShowtimeVM showtimeVM = new();
+			showtimeVM.MovieId = showtime.MovieId;
+			showtimeVM.CinemaHallId = showtime.CinemaHallId;
+			showtimeVM.StartTime = showtime.StartTime;
+			showtimeVM.EndTime = showtime.EndTime;
+			showtimeVM.Movies = movies.ToList();
+			showtimeVM.CinemaHalls = cinemaHalls.ToList();
+			return View(showtimeVM);
+		}
+		[HttpPost]
+		public async Task<IActionResult> Edit(ShowtimeVM model, int id)
+		{
+			/*Movie movie = new();*/
+			var showtime = await _showtimeRepository.Get(id);
+			showtime.MovieId = model.MovieId;
+			showtime.CinemaHallId = model.CinemaHallId;
+			showtime.StartTime = model.StartTime;
+			showtime.EndTime = model.EndTime;
+			_showtimeRepository.Update(showtime);
+			await _movieRepository.SaveAsync();
+			return RedirectToAction("Index");
+		}
+		public async Task<IActionResult> Delete(int id)
+		{
+			var showtime = await _showtimeRepository.Get(id);
+			ShowtimeVM showtimeVM = new();
+			showtimeVM.Id = id;
+			showtimeVM.MovieId = showtime.MovieId;
+			showtimeVM.CinemaHallId = showtime.CinemaHallId;
+			showtimeVM.StartTime = showtime.StartTime;
+			showtimeVM.EndTime = showtime.EndTime;
+			return View(showtimeVM);
+		}
+		[HttpPost]
+		public async Task<IActionResult> Delete(ShowtimeVM model)
+		{
+			_showtimeRepository.Delete(model.Id);
+			await _showtimeRepository.SaveAsync();
+			return RedirectToAction("Index");
+		}
 	}
 }

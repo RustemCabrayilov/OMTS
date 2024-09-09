@@ -6,13 +6,16 @@
 
 <div class="container-fluid">
 	<div class="container">
-		<div class="d-flex justify-content-end mb-3">  @Html.ActionLink("Add", "Create", "Tickets", null, new { @class = "btn btn-primary" })</div>
 		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th scope="col">Id</th>
-					<th scope="col">Customer Name</th>
+					<th scope="col">Seat No</th>
 					<th scope="col">Movie Name</th>
+					<th scope="col">Customer Name</th>
+					<th scope="col">Price</th>
+					<th scope="col">Start time</th>
+					<th scope="col">End time</th>
 					<th scope="col">Operation</th>
 				</tr>
 			</thead>
@@ -22,8 +25,12 @@
 				{
 					<tr>
 						<th scope="row">@item.Id</th>
-						<td>@item.CustomerName</td>
+						<td>@item.SeatNumber</td>
 						<td>@item.MovieName</td>
+						<td>@item.CustomerName</td>
+						<td>@item.Price</td>
+						<td>@item.StartTime</td>
+						<td>@item.EndTime</td>
 						<td>
 							<a class="btn btn-warning" asp-area="admin" asp-controller="Tickets" asp-action="Edit" asp-route-id="@item.Id">
 								<i class="far fa-pen-to-square"></i>
@@ -34,8 +41,6 @@
 						</td>
 					</tr>
 				}
-
-
 			</tbody>
 		</table>
 	</div>

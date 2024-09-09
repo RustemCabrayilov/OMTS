@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using OMTS.DAL.Models;
 using OMTS.DAL.Repository.Interfaces;
 using OMTS.UI.Models;
@@ -12,7 +13,9 @@ namespace OMTS.UI.Controllers
 		private readonly IGenericRepository<Seat> _seatRepository;
 		private readonly IGenericRepository<Showtime> _showtimeRepository;
 
-		public SeatController(IGenericRepository<Seat> seatRepository, IGenericRepository<Showtime> showtimeRepository)
+		public SeatController(IGenericRepository<Seat> seatRepository,
+			IGenericRepository<Showtime> showtimeRepository,
+			IToastNotification toastNotification)
 		{
 			_seatRepository = seatRepository;
 			_showtimeRepository = showtimeRepository;
@@ -29,7 +32,7 @@ namespace OMTS.UI.Controllers
 			{
 				SeatNo = seat.SeatNo,
 				SeatId=seat.Id,
-				IsBooked = showTime.Tickets.Any(t => t.SeatId == seat.Id && t.Seat.IsBooked),
+				IsBooked = showTime.Tickets.Any(t => t.SeatId == seat.Id),
 				ShowtimeId = showtimeId,
 			});
 			SeatSelectVM seatSelectVM = new();

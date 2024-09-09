@@ -17,6 +17,7 @@ namespace OMTS.DAL.Models
 		public int SeatId { get; set; }
         public Seat Seat { get; set; }
         public decimal Price { get; set; }
+        public bool IsPaid { get; set; }
 
-	}
+    }
 }

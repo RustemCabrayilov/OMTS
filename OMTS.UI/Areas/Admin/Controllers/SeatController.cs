@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using OMTS.DAL.Models;
 using OMTS.DAL.Repository.Interfaces;
 using OMTS.UI.Models;
@@ -47,9 +48,44 @@ namespace OMTS.UI.Areas.Admin.Controllers
 		{
 			Seat seat = new();
 			seat.CinemaHallId = model.CinemaHallId;
-			seat.SeatNo= model.SeatNo;
+			seat.SeatNo = model.SeatNo;
 			seat.IsBooked = false;
 			await _seatRepository.Add(seat);
+			await _seatRepository.SaveAsync();
+			return RedirectToAction("Index");
+		}
+		public async Task<IActionResult> Edit(int id)
+		{
+			var seat = await _seatRepository.Get(id);
+			SeatVM seatVM = new();
+			seatVM.SeatNo = seat.SeatNo;
+			seatVM.CinemaHallId = seat.CinemaHallId;
+			return View(seatVM);
+		}
+		[HttpPost]
+		public async Task<IActionResult> Edit(SeatVM model, int id)
+		{
+			var seat = await _seatRepository.Get(id);
+			seat.SeatNo = model.SeatNo;
+			seat.CinemaHallId = model.CinemaHallId;
+			seat.IsBooked = false;
+			_seatRepository.Update(seat);
+			await _seatRepository.SaveAsync();
+			return RedirectToAction("Index");
+		}
+		public async Task<IActionResult> Delete(int id)
+		{
+			var seat = await _seatRepository.Get(id);
+			SeatVM seatVM = new();
+			seatVM.Id= seat.Id;
+			seatVM.SeatNo = seat.SeatNo;
+			seatVM.CinemaHallId = seat.CinemaHallId;
+			return View(seatVM);
+		}
+		[HttpPost]
+		public async Task<IActionResult> Delete(SeatVM model)
+		{
+			_seatRepository.Delete(model.Id);
 			await _seatRepository.SaveAsync();
 			return RedirectToAction("Index");
 		}

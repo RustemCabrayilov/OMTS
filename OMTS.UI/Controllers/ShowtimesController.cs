@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using OMTS.DAL.Models;
 using OMTS.DAL.Repository.Interfaces;
 using OMTS.UI.Models;
@@ -11,7 +12,7 @@ namespace OMTS.UI.Controllers
 		private readonly IGenericRepository<Movie> _movieRepository;
 		private readonly IGenericRepository<CinemaHall> _cinemaHallRepository;
 
-		public ShowtimesController(IGenericRepository<Showtime> showtimeRepository, IGenericRepository<Movie> movieRepository, IGenericRepository<CinemaHall> cinemaHallRepository)
+		public ShowtimesController(IGenericRepository<Showtime> showtimeRepository, IGenericRepository<Movie> movieRepository, IGenericRepository<CinemaHall> cinemaHallRepository, IToastNotification toastNotification)
 		{
 			_showtimeRepository = showtimeRepository;
 			_movieRepository = movieRepository;

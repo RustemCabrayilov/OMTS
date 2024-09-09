@@ -13,15 +13,18 @@
 		@foreach (var item in Model)
 		{
 			<tr>
-				<th scope="row">@item.MovieName</th>
-				<td>@item.SeatNumber</td>
-				<td>@item.StartTime</td>
-				<td>@item.EndTime</td>
-				<th scope="row">@item.Price<i class="fa-solid fa-dollar-sign"></i></th>
+				@if (!item.IsPaid)
+				{
+					<td>@item.MovieName</td>
+					<td>@item.SeatNumber</td>
+					<td>@item.StartTime</td>
+					<td>@item.EndTime</td>
+					<td>@item.Price<i class="fa-solid fa-dollar-sign"></i></td>
+					<td><a class="btn btn-warning text-white" asp-controller="Payments" asp-action="Create" asp-route-ticketId="@item.Id">Buy</a></td>
+				}
 			</tr>
 
 		}
 
 	</tbody>
 </table>
-<a class="btn btn-warning" asp-controller="Payment" asp-action="">Buy Now</a>

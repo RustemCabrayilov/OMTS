@@ -14,6 +14,7 @@
 			<thead>
 				<tr>
 					<th scope="col">Id</th>
+					<th scope="col">Thumbnail</th>
 					<th scope="col">Title</th>
 					<th scope="col">Genre</th>
 					<th scope="col">Duration</th>
@@ -28,7 +29,7 @@
 				{
 					<tr>
 						<th scope="row">@item.Id</th>
-						@* <td><img width="150px" height="150px" src="@Url.Content($"~/images/{item.Thumbnail}")" /></td> *@
+						<td><img width="120px" height="180px" src="@Url.Content($"~/Images/{item.Thumbnail}")" /></td>
 						<td>@item.Title</td>
 						<td>@item.Genre</td>
 						<td>@item.Duration</td>

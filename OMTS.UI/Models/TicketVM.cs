@@ -12,11 +12,11 @@ namespace OMTS.UI.Models
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
 		public int SeatNumber { get; set; }
-	
 		public decimal Price { get; set; }
-		public List<Ticket> SeatNumbers { get; set; }
+		public List<Seat> SeatNumbers { get; set; }
 		public List<Movie> Movies { get; set; }
 		public List<Showtime> Showtimes { get; set; }
 
-	}
+        public bool IsPaid { get; set; }
+    }
 }

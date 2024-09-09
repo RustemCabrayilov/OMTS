@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OMTS.DAL.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OMTS.DAL.Data
 {
-	public class OMTSDbContext : DbContext
+	public class OMTSDbContext : IdentityDbContext
 	{
 		public OMTSDbContext(DbContextOptions<OMTSDbContext> opts) : base(opts)
 		{

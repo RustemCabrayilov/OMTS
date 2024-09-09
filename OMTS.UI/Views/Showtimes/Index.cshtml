@@ -6,7 +6,7 @@
 		<thead>
 			<tr>
 				<th scope="col">Movie</th>
-				<th scope="col">Seat Number</th>
+				<th scope="col">Movie</th>
 				<th scope="col">Start Time</th>
 				<th scope="col">End Time</th>
 			</tr>
@@ -20,7 +20,7 @@
 					<td>@item.StartTime</td>
 					<td>@item.EndTime</td>
 					<td>
-						<li class="list-group-item"><a asp-controller="Seat" asp-action="Index" asp-route-customerId="@item.CustomerId" asp-route-showtimeId="@item.Id" asp-route-movieId="@item.MovieId" class="btn-primary">Book</a></li>
+					<a asp-controller="Seat" asp-action="Index" asp-route-customerId="@item.CustomerId" asp-route-showtimeId="@item.Id" asp-route-movieId="@item.MovieId" class="btn btn-warning">Book</a>
 					</td>
 
 				</tr>

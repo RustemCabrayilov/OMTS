@@ -12,15 +12,18 @@ namespace OMTS.UI.Areas.Admin.Controllers
 		private readonly IGenericRepository<Movie> _movieRepository;
 		private readonly IGenericRepository<Customer> _customerRepository;
 		private readonly IGenericRepository<Showtime> _showtimeRepository;
+		private readonly IGenericRepository<Seat> _seatRepository;
 		public TicketsController(IGenericRepository<Ticket> ticketRepository,
 			IGenericRepository<Movie> movieRepository,
 			IGenericRepository<Customer> customerRepository,
-			IGenericRepository<Showtime> showtimeRepository)
+			IGenericRepository<Showtime> showtimeRepository,
+			IGenericRepository<Seat> seatRepository)
 		{
 			_ticketRepository = ticketRepository;
 			_movieRepository = movieRepository;
 			_customerRepository = customerRepository;
 			_showtimeRepository = showtimeRepository;
+			_seatRepository = seatRepository;
 		}
 
 		public async Task<IActionResult> Index()
@@ -30,49 +33,81 @@ namespace OMTS.UI.Areas.Admin.Controllers
 			foreach (var ticket in tickets)
 			{
 				var customer = await _customerRepository.Get(ticket.CustomerId);
+				var seat = await _seatRepository.Get(ticket.SeatId);
 				var movie = await _movieRepository.Get(ticket.MovieId);
 				var showtime = await _showtimeRepository.Get(ticket.ShowtimeId);
 				list.Add(new TicketVM
 				{
 					Id = ticket.Id,
 					CustomerId = customer?.Id,
-					CustomerName = customer?.Name,
+					CustomerName = customer?.UserName,
 					MovieId = movie.Id,
 					MovieName = movie.Title,
 					StartTime = showtime.StartTime,
 					EndTime = showtime.EndTime,
-					/*SeatNumber = ticket.SeatNumber,*/
+					SeatNumber = seat.SeatNo,
 					Price = ticket.Price,
+					IsPaid = ticket.IsPaid,
 				});
 			}
 			return View(list);
 		}
-		public async Task<IActionResult> Create(int? customerId, int? showtimeId, int? movieId)
+		public async Task<IActionResult> Edit(int id)
 		{
-			
-			var movies= await _movieRepository.GetAll();
-			var showtimes=await _showtimeRepository.GetAll();
-			TicketVM ticketVM = new();
-			ticketVM.CustomerId = customerId ?? 0;
-			ticketVM.ShowtimeId = showtimeId ?? 0;
-			ticketVM.MovieId = movieId ?? 0;
-			ticketVM.Movies = movies.ToList();
-			ticketVM.Showtimes = showtimes.ToList();
+			var ticket = await _ticketRepository.Get(id);
+			var customer = await _customerRepository.Get(ticket.CustomerId);
+			var seat = await _seatRepository.Get(ticket.SeatId);
+			var movie = await _movieRepository.Get(ticket.MovieId);
+			var showtime = await _showtimeRepository.Get(ticket.ShowtimeId);
+			var movies = await _movieRepository.GetAll();
+			var seats = await _seatRepository.GetAll();
+			var showtimes = await _showtimeRepository.GetAll();
+			TicketVM ticketVM = new TicketVM
+			{
+				Id = ticket.Id,
+				CustomerId = customer?.Id,
+				CustomerName = customer?.UserName,
+				MovieId = movie.Id,
+				MovieName = movie.Title,
+				StartTime = showtime.StartTime,
+				EndTime = showtime.EndTime,
+				SeatNumber = seat.SeatNo,
+				Price = ticket.Price,
+				Movies = movies.ToList(),
+				SeatNumbers = seats.ToList(),
+				Showtimes =showtimes.ToList(),
+				IsPaid=ticket.IsPaid,
+			};
+			return View(ticketVM);
+		}
+		public async Task<IActionResult> Delete(int id)
+		{
+			var ticket = await _ticketRepository.Get(id);
+			var customer = await _customerRepository.Get(ticket.CustomerId);
+			var seat = await _seatRepository.Get(ticket.SeatId);
+			var movie = await _movieRepository.Get(ticket.MovieId);
+			var showtime = await _showtimeRepository.Get(ticket.ShowtimeId);
+			TicketVM ticketVM = new TicketVM
+			{
+				Id = ticket.Id,
+				CustomerId = customer?.Id,
+				CustomerName = customer?.UserName,
+				MovieId = movie.Id,
+				MovieName = movie.Title,
+				StartTime = showtime.StartTime,
+				EndTime = showtime.EndTime,
+				SeatNumber = seat.SeatNo,
+				Price = ticket.Price,
+				IsPaid=ticket.IsPaid,
+			};
 			return View(ticketVM);
 		}
 		[HttpPost]
-		public async Task<IActionResult> Create(TicketVM model)
+		public async Task<IActionResult> Delete(TicketVM model)
 		{
-			Ticket ticket = new();
-			ticket.MovieId = model.MovieId;
-			/*ticket.SeatNumber = model.SeatNumber;*/
-			ticket.CustomerId = model.CustomerId;
-			ticket.ShowtimeId = model.ShowtimeId;
-			ticket.Price = model.Price;
-			await _ticketRepository.Add(ticket);
+			_ticketRepository.Delete(model.Id);
 			await _ticketRepository.SaveAsync();
 			return RedirectToAction("Index");
 		}
-
 	}
 }

@@ -1,8 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "LogIn";
     Layout = null;
 }
-
 @model AccountVM
 
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -23,8 +21,18 @@
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1">Check me out</label>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a class="btn btn-secondary"  asp-controller="Account" asp-action="SignUp">
+
+                        Registration
+                    </a>
+                </div>
+
             </form>
         </div>
+
+
     </div>
+
 </div>
