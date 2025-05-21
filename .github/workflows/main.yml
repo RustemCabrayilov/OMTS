@@ -16,10 +16,10 @@ jobs:
         dotnet-version: '8.0.x'
   
     - name: Restore
-      run: dotnet restore ./OMTS.UI.sln 
+      run: dotnet restore ./OMTS.UI.proj 
   
     - name: Build
-      run: dotnet build ./OMTS.UI.sln --configuration Release
+      run: dotnet build ./OMTS.UI.proj --configuration Release
   
     - name: Publish
       run: dotnet publish ./OMTS.UI.proj --configuration Release --no-build
