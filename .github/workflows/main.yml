@@ -1,25 +1,29 @@
 name: Publish
+
 on:
   workflow_dispatch:
   push:
     branches:
-    - master
+      - master
+
 jobs:
   publish:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v3
-  
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
-  
-    - name: Restore
-      run: dotnet restore ./OMTS.UI.proj 
-  
-    - name: Build
-      run: dotnet build ./OMTS.UI.proj --configuration Release
-  
-    - name: Publish
-      run: dotnet publish ./OMTS.UI.proj --configuration Release --no-build
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore OMTS.sln
+
+      - name: Build solution
+        run: dotnet build OMTS.sln --configuration Release
+
+      - name: Publish UI project
+        run: dotnet publish OMTS.UI/OMTS.UI.csproj --configuration Release --no-build --output ./publish
