@@ -36,7 +36,6 @@ namespace OMTS.UI.Controllers
 
 				});
 			}
-			_toastNotification.AddErrorToastMessage("sc bshdc js");
 			return View(list);
 		}
 

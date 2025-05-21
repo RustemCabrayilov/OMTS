@@ -13,6 +13,7 @@
 	<partial name="_Header" />
 	<div class="container" style="padding-top:100px;">
 		<main role="main" class="pb-3">
+			@await Component.InvokeAsync("NToastNotify")
 			@RenderBody()
 		</main>
 	</div>

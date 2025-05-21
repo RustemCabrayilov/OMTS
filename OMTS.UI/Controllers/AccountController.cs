@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NToastNotify;
 using OMTS.DAL.Models;
 using OMTS.DAL.Repository.Interfaces;
 using OMTS.UI.Areas.Admin.Models;
@@ -12,14 +13,16 @@ namespace OMTS.UI.Controllers
 		private readonly IGenericRepository<Customer> _customerRepository;
 		private readonly UserManager<IdentityUser> _userManager;
 		private readonly SignInManager<IdentityUser> _signInManager;
-
+		private readonly IToastNotification _toastr;
 		public AccountController(IGenericRepository<Customer> customerRepository,
 			UserManager<IdentityUser> userManager,
-			SignInManager<IdentityUser> signInManager)
+			SignInManager<IdentityUser> signInManager,
+			IToastNotification toastr)
 		{
 			_customerRepository = customerRepository;
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_toastr = toastr;
 		}
 		public IActionResult SignUp()
 		{
@@ -82,6 +85,7 @@ namespace OMTS.UI.Controllers
 		public async Task<IActionResult> LogIn(AccountVM model)
 		{
 
+
 			IdentityUser identityUser = new()
 			{
 				Email = model.Email,
@@ -89,19 +93,24 @@ namespace OMTS.UI.Controllers
 				PhoneNumber = model.PhoneNumber
 			};
 			var user = await _userManager.FindByEmailAsync(model.Email);
-
-			await _signInManager.SignInAsync(user, false);
-
-			CookieOptions options = new CookieOptions
+			var checkUser = await _userManager.CheckPasswordAsync(user, model.Password);
+			if (checkUser)
 			{
-				Expires = DateTime.Now.AddDays(5)
-			};
-			var logedInCustomer = _customerRepository.GetAll().Result.First(c => c.UserId == user.Id);
-			Response.Cookies.Append("customer_id", logedInCustomer.Id.ToString(), options);
-			Response.Cookies.Append("email", user.Email, options);
-			Response.Cookies.Append("userName", user.UserName, options);
-			return RedirectToAction("Index", "Movies", new { customerId = logedInCustomer.Id });
+				await _signInManager.SignInAsync(user, false);
 
+				CookieOptions options = new CookieOptions
+				{
+					Expires = DateTime.Now.AddDays(5)
+				};
+				var logedInCustomer = _customerRepository.GetAll().Result.First(c => c.UserId == user.Id);
+				Response.Cookies.Append("customer_id", logedInCustomer.Id.ToString(), options);
+				Response.Cookies.Append("email", user.Email, options);
+				Response.Cookies.Append("userName", user.UserName, options);
+				_toastr.AddSuccessToastMessage($"Welcome {user.UserName}");
+				return RedirectToAction("Index", "Movies", new { customerId = logedInCustomer.Id });
+
+			}
+			return View(model);
 
 			/*var cutomers = await _customerRepository.GetAll();
             foreach (var customer in cutomers)
@@ -118,7 +127,7 @@ namespace OMTS.UI.Controllers
                     return RedirectToAction("Index", "Movies", new { customerId = customer.Id });
                 }
             }*/
-			return View(model);
+
 		}
 	}
 }
