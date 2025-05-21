@@ -22,4 +22,4 @@ jobs:
       run: dotnet build ./OMTS.UI.sln --configuration Release
   
     - name: Publish
-      run: dotnet publish ./OMTS.UI.sln --configuration Release --no-build
+      run: dotnet publish ./OMTS.UI.proj --configuration Release --no-build
