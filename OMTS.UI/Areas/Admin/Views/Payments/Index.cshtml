@@ -1,0 +1,47 @@
+﻿﻿﻿@{
+	ViewData["Title"] = "Index";
+}
+
+@model List<PaymentVM>
+﻿@{
+	ViewData["Title"] = "Index";
+}
+<div class="container-fluid">
+	<div class="container">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">Id</th>
+					<th scope="col">Ticket Id </th>
+					<th scope="col">Payment Date</th>
+					<th scope="col">Payment Method</th>
+					<th scope="col">Operation</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				@foreach (var item in Model)
+				{
+					<tr>
+						<th scope="row">@item.Id</th>
+						<td>@item.TicketId</td>
+						<td>@item.PaymentDate</td>
+						<td>@item.PaymentMethod</td>
+						<td>
+							<a class="btn btn-warning" asp-area="admin" asp-controller="Payments" asp-action="Edit" asp-route-id="@item.Id">
+								<i class="far fa-pen-to-square"></i>
+
+							</a>
+							<a class="btn btn-danger" asp-area="admin" asp-controller="Payments" asp-action="Delete" asp-route-id="@item.Id">
+								<i class="fas fa-trash-can"></i>
+							</a>
+						</td>
+					</tr>
+				}
+
+
+			</tbody>
+		</table>
+
+	</div>
+</div>

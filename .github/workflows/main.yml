@@ -1,0 +1,36 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore ./OMTS.UI/OMTS.UI.csproj
+
+      - name: Build
+        run: dotnet build ./OMTS.UI/OMTS.UI.csproj --configuration Release
+
+      - name: Publish
+        run: dotnet publish ./OMTS.UI/OMTS.UI.csproj --configuration Release --no-build --output './publish'
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: software-homework-app  # Replace this with your actual Azure Web App name
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: './publish'

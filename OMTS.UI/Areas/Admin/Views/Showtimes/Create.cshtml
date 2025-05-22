@@ -1,0 +1,53 @@
+﻿@model ShowtimeVM
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ShowtimeVM</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="MovieId" class="control-label"></label>
+				<select asp-for="MovieId"
+						class="form-control"
+						asp-items="@(new SelectList(Model.Movies, nameof(Movie.Id), nameof(Movie.Title)))">
+					<option>Please select one</option>
+				</select>
+				<span asp-validation-for="MovieId" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="CinemaHallId" class="control-label"></label>
+				<select asp-for="CinemaHallId"
+						class="form-control" asp-items="@(new SelectList(Model.CinemaHalls, nameof(CinemaHall.Id), nameof(CinemaHall.Name)))">
+					<option>Please select one</option>
+				</select>
+				<span asp-validation-for="CinemaHallId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="StartTime" class="control-label"></label>
+				<input type="date" asp-for="StartTime" class="form-control" />
+				<span asp-validation-for="StartTime" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="EndTime" class="control-label"></label>
+				<input type="date" asp-for="EndTime" class="form-control" />
+				<span asp-validation-for="EndTime" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
