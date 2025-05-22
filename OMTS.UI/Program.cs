@@ -5,6 +5,7 @@ using NToastNotify;
 using OMTS.DAL.Data;
 using OMTS.DAL.Repository;
 using OMTS.DAL.Repository.Interfaces;
+using System;
 
 namespace OMTS.UI
 {
@@ -67,7 +68,12 @@ namespace OMTS.UI
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Account}/{action=LogIn}/{id?}");
-
+			using (var scope = app.Services.CreateScope())
+			{
+				var srv = scope.ServiceProvider;
+				var context = srv.GetRequiredService<OMTSDbContext>();
+				context.Database.Migrate();
+			}
 			app.Run();
 		}
 	}
